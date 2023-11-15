@@ -8,6 +8,7 @@ public:
 	void addWorker(Worker* newWorker);
 	void deleteWorker(Worker* deleteWorker);
 	Worker* getWorker(int index);
+	int getCount();
 	void saveToFile();
 	void loadFromFile();
 	
@@ -15,7 +16,7 @@ public:
 private:
 	int count = 0;
 	Worker** workers;
-	void sorting();
+
 	
 };
 #endif

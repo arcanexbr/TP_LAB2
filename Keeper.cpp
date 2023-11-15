@@ -2,6 +2,7 @@
 #include "Worker.h"
 #include <algorithm>
 #include <fstream>
+#include <iostream>
 using namespace std;
 
 Keeper::Keeper()
@@ -11,7 +12,11 @@ Keeper::Keeper()
 
 Keeper::~Keeper()
 {
-	delete [] workers;
+	for (int i = 0; i < count; i++) {
+		delete workers[i];
+	}
+	
+	cout << this << " (Keeper) deleted.\n";
 }
 
 void Keeper::addWorker(Worker* newWorker)
@@ -37,11 +42,50 @@ void Keeper::addWorker(Worker* newWorker)
 
 void Keeper::deleteWorker(Worker* deleteWorker)
 {
+	for (int i = 0; i < count; i++) {
+		if (workers[i] == deleteWorker) {
+			count--;
+			Worker** newWorkers = new Worker * [count];
+			int k2 = 0;
+			for (int k1 = 0; k1 < count ; k1++) {
+				if (workers[k2] == deleteWorker) {
+					k2++;
+					
+				};
+				newWorkers[k1] = workers[k2];
+				k2++;
+			}
+			deleteWorker->~Worker();
+			
+			delete[] workers;
+			workers = newWorkers;
+			if (count != 0) {
+				std::sort(workers, workers + count - 1, [](Worker* a, Worker* b) { return  (strcmp(a->getName(), b->getName())) < 0; });
+			}
+			return;
+		}
+	}
+	cout << "Данный работник не найден\n";
+	return;
 }
 
 Worker* Keeper::getWorker(int index)
 {
-	return workers[index];
+	try {
+		if (index >= count) {
+			throw "Ошибка - работник под таким номером не найден.\n";
+		}
+		return workers[index];
+	}
+	catch (const char* err) {
+		cout << err;
+		return nullptr;
+	}
+}
+
+int Keeper::getCount()
+{
+	return count;
 }
 
 void Keeper::saveToFile()
@@ -61,12 +105,23 @@ void Keeper::saveToFile()
 
 void Keeper::loadFromFile()
 {
-	
+	int read_count;
+	ifstream fin;
+	fin.open("file.txt");
+	char buff[50];
+	fin.getline(buff, 50);
+	read_count = buff[0] - 48;
+	for (int i = 0; i < read_count; i++) {
+		addWorker(new Worker());
+		fin.getline(buff, 50);
+		workers[i]->setName(buff);
+		fin.getline(buff, 50);
+		workers[i]->setWork(buff);
+		fin.getline(buff, 50);
+		workers[i]->setStartDate((int) (buff[0]-48));
+	}
 }
 
 
-void Keeper::sorting()
-{
 
-}
 

@@ -7,26 +7,81 @@ int main()
 {
 	SetConsoleOutputCP(1251);
 	SetConsoleCP(1251);
-	Worker worker1;
-	Worker worker2;
-	Worker worker3;
 	Keeper keeper;
-	worker1.setName(_strdup("АБ"));
-	worker2.setName(_strdup("АА"));
-	worker3.setName(_strdup("АВ"));
-	worker1.setWork(_strdup("Столяр"));
-	worker2.setWork(_strdup("Маляр"));
-	worker3.setWork(_strdup("Фрезеровщик"));
-	worker1.setStartDate(2002);
-	worker2.setStartDate(2008);
-	worker3.setStartDate(2015);
+	keeper.loadFromFile();
+	cout << "Сотрудники загружены из файла.\n";
+	int c = 0;
+	
+	while (c < 5) {
+		cout << "Список соттрудников: \n";
+		for (int i = 0; i < keeper.getCount(); i++) {
+			cout << i + 1 << ")\n" << *(keeper.getWorker(i)) << endl;
+		}
+		cout << "Функции: \n1.Добавить работника\n2.Редактировать работника\n3.Удалить работника\n4.Вывести имена сотрудников со стажем выше заданного\n5.Выход\n";
+		cin >> c;
+		int b = 0;
+		int k = 0;
+		switch (c) {
+			
+		case (1):
+			cout << "Перечислите ФИО, Должность и год вступления на должность отдельно через Enter:\n";
+			keeper.addWorker(new Worker());
+			cin >> *(keeper.getWorker(keeper.getCount() - 1));
+			break;
+		case(2):
+			cout << "Введите номер сотрудника:\n";
+			cin >> k;
+			if (keeper.getWorker(k + 1) == nullptr) {
+				cout << "Сотрудника под таким номером нет.\n";
+				break;
+			}
+			cout << "Что изменить?\n1.ФИО\n2.Должность\n3.Год вступления в должность\n";
+			cin >> b;
+			switch (b) {
+				char buff[50];
+			case(1):
+				cout << "Новое ФИО: ";
 
-	keeper.addWorker(&worker1);
-	keeper.addWorker(&worker2);
-	keeper.addWorker(&worker3);
-	cout << keeper.getWorker(0)->getName() << endl;
-	cout << keeper.getWorker(1)->getName() << endl;
-	cout << keeper.getWorker(2)->getName() << endl;
+				cin >> buff;
+				keeper.getWorker(k - 1)->setName(buff);
+				cout << endl;
+				break;
+			case(2):
+				cout << "Новая должность: ";
+				cin >> buff;
+				keeper.getWorker(k - 1)->setWork(buff);
+				cout << endl;
+				break;
+			case(3):
+				cout << "Новый год вступления на должность: ";
+				cin >> buff;
+				keeper.getWorker(k - 1)->setStartDate(atoi(buff));
+				cout << endl;
+				break;
+			}
+		case(3):
+			cout << "Номер сотрудника для удаления: ";
+			cin >> k;
+			cout << endl;
+			keeper.deleteWorker(keeper.getWorker(k-1));
+			break;
+		case(4):
+			cout << "Минимальный стаж: ";
+			int st = 0;
+			cin >> st;
+			for (int i = 0; i < keeper.getCount(); i++) {
+				if (2023 - keeper.getWorker(i)->getStartDate() > st) {
+					cout << i + 1 << ")\n" << *(keeper.getWorker(i));
+				}
+			}
+			
+			break;
+
+		}
+		cout << "--------------------------------------\n";
+	}
+	keeper.saveToFile();
+
 
 
 
