@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include "Keeper.h"
 #include "Worker.h"
+#include "TextCorrector.h"
 using namespace std;
 int main()
 {
@@ -18,6 +19,7 @@ int main()
 			cout << i + 1 << ")\n" << *(keeper.getWorker(i)) << endl;
 		}
 		cout << "Функции: \n1.Добавить работника\n2.Редактировать работника\n3.Удалить работника\n4.Вывести имена сотрудников со стажем выше заданного\n5.Выход\n";
+		cin.clear();
 		cin >> c;
 		int b = 0;
 		int k = 0;
@@ -27,38 +29,42 @@ int main()
 			cout << "Перечислите ФИО, Должность и год вступления на должность отдельно через Enter:\n";
 			keeper.addWorker(new Worker());
 			cin >> *(keeper.getWorker(keeper.getCount() - 1));
+			keeper.sort();
 			break;
 		case(2):
 			cout << "Введите номер сотрудника:\n";
 			cin >> k;
-			if (keeper.getWorker(k + 1) == nullptr) {
+			if (keeper.getWorker(k - 1) == nullptr) {
 				cout << "Сотрудника под таким номером нет.\n";
 				break;
 			}
 			cout << "Что изменить?\n1.ФИО\n2.Должность\n3.Год вступления в должность\n";
 			cin >> b;
-			switch (b) {
-				char buff[50];
+			char buff[50];
+			cin.getline(buff, 50);
+			switch (b) {	
 			case(1):
 				cout << "Новое ФИО: ";
 
-				cin >> buff;
+				cin.getline(buff, 50);
 				keeper.getWorker(k - 1)->setName(buff);
+				keeper.sort();
 				cout << endl;
 				break;
 			case(2):
 				cout << "Новая должность: ";
-				cin >> buff;
+				cin.getline(buff, 50);
 				keeper.getWorker(k - 1)->setWork(buff);
 				cout << endl;
 				break;
 			case(3):
 				cout << "Новый год вступления на должность: ";
-				cin >> buff;
+				cin.getline(buff, 50);
 				keeper.getWorker(k - 1)->setStartDate(atoi(buff));
 				cout << endl;
 				break;
 			}
+			break;
 		case(3):
 			cout << "Номер сотрудника для удаления: ";
 			cin >> k;
@@ -82,7 +88,7 @@ int main()
 	}
 	keeper.saveToFile();
 
-
+	TextCorrector::start2();
 
 
 }

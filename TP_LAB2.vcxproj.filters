@@ -24,6 +24,9 @@
     <ClCompile Include="Keeper.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="TextCorrector.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Worker.h">
@@ -32,9 +35,15 @@
     <ClInclude Include="Keeper.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="TextCorrector.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="file.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="input.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
   </ItemGroup>

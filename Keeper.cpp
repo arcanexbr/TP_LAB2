@@ -75,6 +75,7 @@ Worker* Keeper::getWorker(int index)
 		if (index >= count) {
 			throw "Ошибка - работник под таким номером не найден.\n";
 		}
+		std::sort(workers, workers + count - 1, [](Worker* a, Worker* b) { return  (strcmp(a->getName(), b->getName())) < 0; });
 		return workers[index];
 	}
 	catch (const char* err) {
@@ -118,8 +119,13 @@ void Keeper::loadFromFile()
 		fin.getline(buff, 50);
 		workers[i]->setWork(buff);
 		fin.getline(buff, 50);
-		workers[i]->setStartDate((int) (buff[0]-48));
+		workers[i]->setStartDate(atoi(buff));
 	}
+}
+
+void Keeper::sort()
+{
+	std::sort(workers, workers + count, [](Worker* a, Worker* b) { return  (strcmp(a->getName(), b->getName())) < 0; });
 }
 
 

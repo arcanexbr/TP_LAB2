@@ -11,6 +11,7 @@ public:
 	int getCount();
 	void saveToFile();
 	void loadFromFile();
+	void sort();
 	
 
 private:
